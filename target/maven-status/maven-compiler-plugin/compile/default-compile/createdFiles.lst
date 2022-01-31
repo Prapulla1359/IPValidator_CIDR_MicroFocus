@@ -1,0 +1,4 @@
+com\techinterview\App.class
+com\techinterview\ipvalidator\inputvalidation\InputValidation.class
+com\techinterview\ipvalidator\GivenIpValidator.class
+com\techinterview\ipvalidator\service\Utility.class
