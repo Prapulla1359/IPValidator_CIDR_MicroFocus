@@ -139,7 +139,7 @@ public class GivenIpValidator {
      * Returns binaryIP with min range/max range.
      *
      * @param binaryIP that holds Binary Format of CIDR IP
-     * @param range that holds the range = 32 - CIDR range to find thenumber of bits
+     * @param range that holds the range = 32 - CIDR range to find the number of bits
      * @param minOrMax replaces with 0 for minRange and 1 for maxRange
      * @return binaryRange of type String
      */
