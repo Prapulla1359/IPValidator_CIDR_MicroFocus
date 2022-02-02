@@ -45,10 +45,46 @@ public class GivenIpValidator {
      * @throws IllegalArgumentException if either ipAddress or cidrRange definitions is invalid.
      * @return true if provided IP address is covered by the CIDR range; false otherwise.
      */
+
+    /**
+     * Constant to define CIDR default Range if not provided in CIDR input.
+     */
     public static final String DEFAULT_RANGE = "32";
 
+    /**
+     * Constant to define the delimiter to split CIDR Range.
+     */
     public static final String RANGE_DELIMITER = "/";
 
+    /**
+     * Function to implement validation of given IP address if is in the range defined by cidrRange parameter.
+     *
+     * Splitting the CIDR range based on "/" delimiter and storing it in String array.
+     * If the length after split is less than 2, it does not have /n.
+     * For example: a.b.c.d/n is the CIDR range, but the input parameter is without /n. In this case it suffixes with default value /32.
+     *
+     * Invoking the methods isValidIpAddress and isValidCIDR of class InputValidation which returns true if both are valid, otherwise throws IllegalArgumentException.
+     *
+     * Invoking Utility class convertCidrToBinary method to convert CIDR IP to binary format.
+     *
+     * Invoking Utility class getCidrRangeInteger method to find CIDR range.
+     * Formula: range = address length(32 bits) - range provided in CIDR.
+     * For ex: CIDR range = a.b.c.d/n, range = 32 - n
+     *
+     * Evaluate minimum range by replacing range number of bits with "0" and maximum range by replacing range number of bits with "1"
+     * For ex: 10.40.15.2/29
+     * binary format of 10.40.15.2 : 0000 0101. 0010 1000. 0000 1111. 0000 0010
+     * range = 32-29 =3, minRange = replace right most 3 bits with 0 and maxRange = replace right most 3 bits with 1 .
+     *
+     * Convert minRange, maxRange and given ipAddress to Long.
+     *
+     * If ipAddress lies between minRange and maxRange, ipAddress is valid otherwise invalid.
+     *
+     * @param ipAddress String representation of IP address
+     * @param cidrRange Classless Inter-Domain Routing (CIDR) definition that defines range of allowed IP addresses.
+     * @return true if provided IP address is covered by the CIDR range; false otherwise.
+     * @throws UnknownHostException if IP address of a host could not be determined
+     */
     public static boolean validateIpAddress(String ipAddress, String cidrRange) throws UnknownHostException
     {
         InputValidation inputValidation = new InputValidation();
@@ -73,7 +109,16 @@ public class GivenIpValidator {
         return false;
     }
 
-
+    /**
+     * Converts ipAddress to Long.
+     *
+     * For Example: 192.168.1.2
+     * 192 * (256)^3 + 168 * (256)^2 + 1 * (256)^1 + 2 * (256)^0 =
+     * 3221225472 + 11010048 + 256 + 2 = 3232235778
+     *
+     * @param ipAddress
+     * @return resultIP of type long.
+     */
     public static long ipToLongInt (String ipAddress) {
         long resultIP = 0;
         String[] ipAddressArray = ipAddress.split("\\.");
@@ -86,6 +131,18 @@ public class GivenIpValidator {
     }
 
 
+    /**
+     * Function to evaluate range. Passing range For ex: "%3s", as String formatter to replace "range : 3" number of bits.
+     * String formatter appends space so replacing it with "0" or "1". Ex: 111
+     *
+     * Replace binary IP provided start index(32-3 = 29), end index (Binary ip Length : 32) and String "111" to replace
+     * Returns binaryIP with min range/max range.
+     *
+     * @param binaryIP that holds Binary Format of CIDR IP
+     * @param range that holds the range = 32 - CIDR range to find thenumber of bits
+     * @param minOrMax replaces with 0 for minRange and 1 for maxRange
+     * @return binaryRange of type String
+     */
     private static String evaluateRange(StringBuffer binaryIP, Integer range, String minOrMax){
         String binaryRange = binaryIP.toString();
         if(range >0) {

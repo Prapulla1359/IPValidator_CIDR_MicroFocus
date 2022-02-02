@@ -7,6 +7,15 @@ import java.net.UnknownHostException;
 
 public class InputValidation {
 
+    /**
+     * Function to validate IP Address.
+     *
+     * @param ipAddress String representation of IP address that needs to be validated.
+     *                  Function must verify that IP address definition itself is valid.
+     * @throws IllegalArgumentException if ipAddress is invalid.
+     * @return true if provided IP address is valid.
+     */
+
     public boolean isValidIpAddress(final String ipAddress) throws IllegalArgumentException
     {
         try {
@@ -17,7 +26,17 @@ public class InputValidation {
         }
     }
 
-    public boolean isValidCIDR(final String cidrRange){
+    /**
+     * Function to validate IP Address.
+     *
+     * @param cidrRange String representation of IP address that needs to be validated.
+     *                  Function must verify that IP address definition itself is valid.
+     * @throws IllegalArgumentException if ipAddress is invalid.
+     * @return true if provided IP address is valid.
+     */
+
+    public boolean isValidCIDR(final String cidrRange) throws IllegalArgumentException
+    {
         try {
             SubnetUtils subnetUtils = new SubnetUtils(cidrRange);
             return true;
