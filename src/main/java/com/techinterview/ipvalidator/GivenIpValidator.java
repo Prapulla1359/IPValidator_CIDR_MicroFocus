@@ -65,30 +65,26 @@ public class GivenIpValidator {
             Integer range = Utility.getCidrRangeInteger(defaultCIDRRange);
             String minRange = evaluateRange(binaryIP, range, "0");
             String maxRange = evaluateRange(binaryIP, range, "1");
-            /*System.out.println("Lowest Range :"+minRange);
-            System.out.println("Highest Range :"+maxRange);*/
             Long startIPAddress = Long.parseLong(minRange, 2);
             Long endIPAddress = Long.parseLong(maxRange, 2);
-            /*System.out.println("Lowest Range :"+startIPAddress);
-            System.out.println("Highest Range :"+endIPAddress);*/
-            long inputIPAddress = ipToLongInt(InetAddress.getByName(ipAddress));
-
+            long inputIPAddress = ipToLongInt(ipAddress);
             return (inputIPAddress >= startIPAddress && inputIPAddress <= endIPAddress);
         }
         return false;
     }
 
 
-    public static long ipToLongInt (InetAddress ipAddress) {
+    public static long ipToLongInt (String ipAddress) {
         long resultIP = 0;
-        byte[] ipAddressOctets = ipAddress.getAddress();
-
-        for (byte octet : ipAddressOctets) {
-            resultIP <<= 8;
-            resultIP |= octet & 0xFF;
+        String[] ipAddressArray = ipAddress.split("\\.");
+        for (int i = 0; i < ipAddressArray.length; i++) {
+            int power = 3 - i;
+            int ip = Integer.parseInt(ipAddressArray[i]);
+            resultIP += ip * Math.pow(256, power);
         }
         return resultIP;
     }
+
 
     private static String evaluateRange(StringBuffer binaryIP, Integer range, String minOrMax){
         String binaryRange = binaryIP.toString();
